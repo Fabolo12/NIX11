@@ -25,5 +25,29 @@ public class Main {
             products.add(phone);
         }
         System.out.println(products);
+
+        //optionalExamples();
     }
+
+    private static void optionalExamples() {
+        PHONE_SERVICE.createAndSavePhones(1);
+        final String id = PHONE_SERVICE.getAll().get(0).getId();
+
+        PHONE_SERVICE.printIfPresent(id);
+        PHONE_SERVICE.printOrGetDefault(id);
+        PHONE_SERVICE.printOrCreatDefault(id);
+        PHONE_SERVICE.mapPhoneToString(id);
+        PHONE_SERVICE.printOrPrintDefault(id);
+        PHONE_SERVICE.checksPhoneLessThen(id, 1000);
+        PHONE_SERVICE.checksPhoneLessThen(id, 10);
+        PHONE_SERVICE.checksPhoneLessThen("123", 1000);
+        try {
+            PHONE_SERVICE.printPhoneOrElseThrowException(id);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        PHONE_SERVICE.printPhone(id);
+    }
+
+
 }
