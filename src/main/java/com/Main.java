@@ -1,52 +1,53 @@
 package com;
 
 import com.model.Phone;
-import com.model.Product;
-import com.model.ProductType;
+import com.model.TV;
 import com.repository.PhoneRepository;
+import com.repository.TVRepository;
+import com.service.OptionalExamples;
 import com.service.PhoneService;
-import com.service.ProductFactory;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.service.ProductService;
+import com.service.TVService;
 
 
 public class Main {
-    private static final PhoneService PHONE_SERVICE = new PhoneService(new PhoneRepository());
+    private static final ProductService<Phone> PHONE_SERVICE = new PhoneService(new PhoneRepository());
+    private static final ProductService<TV> TV_SERVICE = new TVService(new TVRepository());
+
+    private static final OptionalExamples OPTIONAL_EXAMPLES = new OptionalExamples(new PhoneRepository());
 
     public static void main(String[] args) {
-        PHONE_SERVICE.createAndSavePhones(10);
+        TV_SERVICE.createAndSave(2);
+        TV_SERVICE.printAll();
+
+        System.out.println("~".repeat(5));
+
+        PHONE_SERVICE.createAndSave(2);
         PHONE_SERVICE.printAll();
 
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            final Phone phone = (Phone) ProductFactory.creatProduct(ProductType.PHONE);
-            PHONE_SERVICE.savePhone(phone);
-            products.add(phone);
-        }
-        System.out.println(products);
 
-        //optionalExamples();
+        optionalExamples();
+
     }
 
     private static void optionalExamples() {
-        PHONE_SERVICE.createAndSavePhones(1);
+        PHONE_SERVICE.createAndSave(1);
         final String id = PHONE_SERVICE.getAll().get(0).getId();
 
-        PHONE_SERVICE.printIfPresent(id);
-        PHONE_SERVICE.printOrGetDefault(id);
-        PHONE_SERVICE.printOrCreatDefault(id);
-        PHONE_SERVICE.mapPhoneToString(id);
-        PHONE_SERVICE.printOrPrintDefault(id);
-        PHONE_SERVICE.checksPhoneLessThen(id, 1000);
-        PHONE_SERVICE.checksPhoneLessThen(id, 10);
-        PHONE_SERVICE.checksPhoneLessThen("123", 1000);
+        OPTIONAL_EXAMPLES.printIfPresent(id);
+        OPTIONAL_EXAMPLES.printOrGetDefault(id);
+        OPTIONAL_EXAMPLES.printOrCreatDefault(id);
+        OPTIONAL_EXAMPLES.mapPhoneToString(id);
+        OPTIONAL_EXAMPLES.printOrPrintDefault(id);
+        OPTIONAL_EXAMPLES.checksPhoneLessThen(id, 1000);
+        OPTIONAL_EXAMPLES.checksPhoneLessThen(id, 10);
+        OPTIONAL_EXAMPLES.checksPhoneLessThen("123", 1000);
         try {
-            PHONE_SERVICE.printPhoneOrElseThrowException(id);
+            OPTIONAL_EXAMPLES.printPhoneOrElseThrowException(id);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        PHONE_SERVICE.printPhone(id);
+        OPTIONAL_EXAMPLES.printPhone(id);
     }
 
 

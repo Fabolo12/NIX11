@@ -22,17 +22,17 @@ class PhoneServiceTest {
 
     @Test
     void createAndSavePhones_negativeCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->  target.createAndSavePhones(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () ->  target.createAndSave(-1));
     }
 
     @Test
     void createAndSavePhones_zeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->  target.createAndSavePhones(0));
+        Assertions.assertThrows(IllegalArgumentException.class, () ->  target.createAndSave(0));
     }
 
     @Test
     void createAndSavePhones() {
-        target.createAndSavePhones(2);
+        target.createAndSave(2);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
@@ -51,7 +51,7 @@ class PhoneServiceTest {
     @Test
     void savePhone() {
         final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
+        target.save(phone);
 
         ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
         Mockito.verify(repository).save(argument.capture());
@@ -61,7 +61,7 @@ class PhoneServiceTest {
     @Test
     void savePhone_zeroCount() {
         final Phone phone = new Phone("Title", 0, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
+        target.save(phone);
 
         ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
         Mockito.verify(repository).save(argument.capture());

@@ -1,20 +1,20 @@
 package com.repository;
 
-import com.model.Phone;
+import com.model.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository {
-    void save(Phone phone);
+public interface CrudRepository<T extends Product> {
+    void save(T phone);
 
-    void saveAll(List<Phone> phones);
+    void saveAll(List<T> phones);
 
-    boolean update(Phone phone);
+    boolean update(T phone);
 
     boolean delete(String id);
 
-    List<Phone> getAll();
+    List<T> getAll();
 
-    Optional<Phone> findById(String id);
+    Optional<T> findById(String id);
 }

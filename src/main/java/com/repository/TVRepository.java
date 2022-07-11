@@ -1,34 +1,34 @@
 package com.repository;
 
-import com.model.Phone;
+import com.model.TV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class PhoneRepository implements CrudRepository<Phone> {
+public class TVRepository implements CrudRepository<TV> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PhoneRepository.class);
-    private final List<Phone> phones;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TVRepository.class);
+    private final List<TV> tvList;
 
-    public PhoneRepository() {
-        phones = new LinkedList<>();
+    public TVRepository() {
+        tvList = new LinkedList<>();
     }
 
     @Override
-    public void save(Phone phone) {
+    public void save(TV phone) {
         if (phone == null) {
             final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
             LOGGER.error(exception.getMessage(), exception);
             throw exception;
         } else {
             checkDuplicates(phone);
-            phones.add(phone);
+            tvList.add(phone);
         }
     }
 
-    private void checkDuplicates(Phone phone) {
-        for (Phone p : phones) {
+    private void checkDuplicates(TV phone) {
+        for (TV p : tvList) {
            if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
                        phone.getId());
@@ -39,28 +39,28 @@ public class PhoneRepository implements CrudRepository<Phone> {
     }
 
     @Override
-    public void saveAll(List<Phone> phones) {
-        for (Phone phone : phones) {
+    public void saveAll(List<TV> phones) {
+        for (TV phone : phones) {
             save(phone);
         }
     }
 
     @Override
-    public boolean update(Phone phone) {
-        final Optional<Phone> result = findById(phone.getId());
+    public boolean update(TV phone) {
+        final Optional<TV> result = findById(phone.getId());
         if (result.isEmpty()) {
             return false;
         }
-        final Phone originPhone = result.get();
-        PhoneCopy.copy(phone, originPhone);
+        final TV originPhone = result.get();
+        TVCopy.copy(phone, originPhone);
         return true;
     }
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Phone> iterator = phones.iterator();
+        final Iterator<TV> iterator = tvList.iterator();
         while (iterator.hasNext()) {
-            final Phone phone = iterator.next();
+            final TV phone = iterator.next();
             if (phone.getId().equals(id)) {
                 iterator.remove();
                 return true;
@@ -70,17 +70,17 @@ public class PhoneRepository implements CrudRepository<Phone> {
     }
 
     @Override
-    public List<Phone> getAll() {
-        if (phones.isEmpty()) {
+    public List<TV> getAll() {
+        if (tvList.isEmpty()) {
             return Collections.emptyList();
         }
-        return phones;
+        return tvList;
     }
 
     @Override
-    public Optional<Phone> findById(String id) {
-        Phone result = null;
-        for (Phone phone : phones) {
+    public Optional<TV> findById(String id) {
+        TV result = null;
+        for (TV phone : tvList) {
             if (phone.getId().equals(id)) {
                 result = phone;
             }
@@ -88,8 +88,8 @@ public class PhoneRepository implements CrudRepository<Phone> {
         return Optional.ofNullable(result);
     }
 
-    private static class PhoneCopy {
-        private static void copy(final Phone from, final Phone to) {
+    private static class TVCopy {
+        private static void copy(final TV from, final TV to) {
             to.setCount(from.getCount());
             to.setPrice(from.getPrice());
             to.setTitle(from.getTitle());
