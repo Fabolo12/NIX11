@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.model.Product;
+import com.model.product.Product;
 
 import java.util.List;
 import java.util.Optional;

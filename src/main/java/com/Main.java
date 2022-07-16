@@ -1,13 +1,14 @@
 package com;
 
-import com.model.Phone;
-import com.model.TV;
+import com.model.Order;
+import com.model.product.Phone;
+import com.model.product.Product;
+import com.model.product.TV;
 import com.repository.PhoneRepository;
 import com.repository.TVRepository;
-import com.service.OptionalExamples;
-import com.service.PhoneService;
-import com.service.ProductService;
-import com.service.TVService;
+import com.service.*;
+
+import java.util.List;
 
 
 public class Main {
@@ -16,18 +17,36 @@ public class Main {
 
     private static final OptionalExamples OPTIONAL_EXAMPLES = new OptionalExamples(new PhoneRepository());
 
+    private static final OrderService ORDER_SERVICE = new OrderService();
+
     public static void main(String[] args) {
         TV_SERVICE.createAndSave(2);
-        TV_SERVICE.printAll();
+        PHONE_SERVICE.createAndSave(2);
+
+        final List<TV> tvs = TV_SERVICE.getAll();
+        final Order order = ORDER_SERVICE.creatOrder(tvs);
+        System.out.println(order);
 
         System.out.println("~".repeat(5));
 
-        PHONE_SERVICE.createAndSave(2);
-        PHONE_SERVICE.printAll();
+        final List<Phone> phones = PHONE_SERVICE.getAll();
+        ORDER_SERVICE.addProducts(order, phones);
+        System.out.println(order);
 
+        System.out.println("~".repeat(5));
 
-        optionalExamples();
+        final Product remove = ORDER_SERVICE.remove(order, 1);
+        System.out.println(order);
 
+        System.out.println("~".repeat(5));
+
+        ORDER_SERVICE.setProduct(order, 0, remove);
+        System.out.println(order);
+
+        System.out.println("~".repeat(5));
+
+        ORDER_SERVICE.addProduct(order, 0, remove);
+        System.out.println(order);
     }
 
     private static void optionalExamples() {
@@ -49,6 +68,4 @@ public class Main {
         }
         OPTIONAL_EXAMPLES.printPhone(id);
     }
-
-
 }

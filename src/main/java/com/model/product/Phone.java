@@ -1,4 +1,4 @@
-package com.model;
+package com.model.product;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class Phone extends Product {
+public class Phone extends Product implements Comparable<Phone> {
     private final String model;
     private final Manufacturer manufacturer;
 
@@ -39,5 +39,10 @@ public class Phone extends Product {
                 ", count=" + count +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Phone o) {
+        return getId().compareTo(o.getId());
     }
 }

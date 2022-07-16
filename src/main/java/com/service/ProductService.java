@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.Product;
+import com.model.product.Product;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import java.util.Random;
 public abstract class ProductService<T extends Product> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
     protected static final Random RANDOM = new Random();
-    private final CrudRepository<T> repository;
+    protected final CrudRepository<T> repository;
 
     protected ProductService(CrudRepository<T> repository) {
         this.repository = repository;

@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.*;
+import com.model.product.*;
 
 import java.util.Random;
 

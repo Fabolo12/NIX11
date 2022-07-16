@@ -1,8 +1,8 @@
 package com.service;
 
-import com.model.Manufacturer;
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Manufacturer;
+import com.model.product.Phone;
+import com.model.product.Product;
 import com.repository.PhoneRepository;
 
 import java.util.Optional;
