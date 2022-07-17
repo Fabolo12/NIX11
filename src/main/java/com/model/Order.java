@@ -33,6 +33,7 @@ public class Order {
                 return;
             }
         }
+        tryAddNewValue(products.length, product);
     }
 
     public void add(int index, Product product) {
