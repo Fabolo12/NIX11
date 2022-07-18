@@ -1,28 +1,51 @@
 package com;
 
-import com.model.Order;
-import com.model.product.Phone;
-import com.model.product.Product;
-import com.model.product.TV;
+import com.command.Command;
+import com.command.Commands;
 import com.repository.PhoneRepository;
-import com.repository.TVRepository;
-import com.service.*;
+import com.service.OptionalExamples;
+import com.service.OrderService;
 
-import java.util.List;
+import java.util.Scanner;
 
 
 public class Main {
-    private static final ProductService<Phone> PHONE_SERVICE = new PhoneService(new PhoneRepository());
-    private static final ProductService<TV> TV_SERVICE = new TVService(new TVRepository());
-
-    private static final OptionalExamples OPTIONAL_EXAMPLES = new OptionalExamples(new PhoneRepository());
-
+    private static final OptionalExamples OPTIONAL_EXAMPLES = new OptionalExamples(PhoneRepository.getInstance());
     private static final OrderService ORDER_SERVICE = new OrderService();
 
-    public static void main(String[] args) {
-        TV_SERVICE.createAndSave(2);
-        PHONE_SERVICE.createAndSave(2);
+    private static final Scanner SCANNER = new Scanner(System.in);
 
+    public static void main(String[] args) {
+        final Commands[] values = Commands.values();
+        boolean exit;
+
+        do {
+            exit = userAction(values);
+        } while (!exit);
+    }
+
+    private static boolean userAction(final Commands[] values) {
+        int userCommand = -1;
+        do {
+            for (int i = 0; i < values.length; i++) {
+                System.out.printf("%d) %s%n", i, values[i].getName());
+            }
+            int input = SCANNER.nextInt();
+            if (input >= 0 && input < values.length) {
+                userCommand = input;
+            }
+        } while (userCommand == -1);
+        final Command command = values[userCommand].getCommand();
+        if (command == null) {
+            return true;
+        } else {
+            command.execute();
+            return false;
+        }
+    }
+
+    /*private static void orderExamples() {
+        TV_SERVICE.createAndSave(2);
         final List<TV> tvs = TV_SERVICE.getAll();
         final Order order = ORDER_SERVICE.creatOrder(tvs);
         System.out.println(order);
@@ -67,5 +90,5 @@ public class Main {
             System.out.println(e.getMessage());
         }
         OPTIONAL_EXAMPLES.printPhone(id);
-    }
+    }*/
 }

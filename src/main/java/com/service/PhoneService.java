@@ -2,14 +2,33 @@ package com.service;
 
 import com.model.product.Manufacturer;
 import com.model.product.Phone;
-import com.repository.CrudRepository;
+import com.repository.PhoneRepository;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PhoneService extends ProductService<Phone> {
 
-    public PhoneService(CrudRepository<Phone> repository) {
+    private final PhoneRepository repository;
+
+    private static PhoneService instance;
+
+    private PhoneService(final PhoneRepository repository) {
         super(repository);
+        this.repository = repository;
+    }
+
+    public static PhoneService getInstance() {
+        if (instance == null) {
+            instance = new PhoneService(PhoneRepository.getInstance());
+        }
+        return instance;
+    }
+
+    public static PhoneService getInstance(final PhoneRepository repository) {
+        if (instance == null) {
+            instance = new PhoneService(repository);
+        }
+        return instance;
     }
 
     @Override
@@ -44,5 +63,13 @@ public class PhoneService extends ProductService<Phone> {
             repository.save(phone);
             return phone;
         });
+    }
+
+    public double getTotalPriceForModel(final String model) {
+        double totalPrice = 0;
+        for (Phone phone : repository.findByModel(model)) {
+            totalPrice += phone.getPrice();
+        }
+        return totalPrice;
     }
 }

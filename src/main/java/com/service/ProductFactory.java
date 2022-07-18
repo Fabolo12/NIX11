@@ -1,37 +1,23 @@
 package com.service;
 
-import com.model.product.*;
+import com.model.product.Phone;
+import com.model.product.ProductType;
 
 import java.util.Random;
 
 public class ProductFactory {
     private static final Random RANDOM = new Random();
 
+    private static final ProductService<Phone> PHONE_SERVICE = PhoneService.getInstance();
+
     private ProductFactory() {
     }
 
-    public static Product creatProduct(ProductType type) {
-        return switch (type) {
-            case TV -> new TV(
-                    "Title-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(500),
-                    RANDOM.nextDouble(1000.0)
-            );
-            case PHONE -> new Phone(
-                    "Title-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(500),
-                    RANDOM.nextDouble(1000.0),
-                    "Model-" + RANDOM.nextInt(10),
-                    getRandomManufacturer()
-            );
+    public static void createAndSave(ProductType type) {
+        switch (type) {
+            case PHONE -> PHONE_SERVICE.createAndSave(1);
             default -> throw new IllegalArgumentException("Unknown Product type: " + type);
         };
-    }
-
-    private static Manufacturer getRandomManufacturer() {
-        final Manufacturer[] values = Manufacturer.values();
-        final int index = RANDOM.nextInt(values.length);
-        return values[index];
     }
 
 }

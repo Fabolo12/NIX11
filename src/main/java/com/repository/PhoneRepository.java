@@ -11,8 +11,17 @@ public class PhoneRepository implements CrudRepository<Phone> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PhoneRepository.class);
     private final List<Phone> phones;
 
-    public PhoneRepository() {
+    private static PhoneRepository instance;
+
+    private PhoneRepository() {
         phones = new LinkedList<>();
+    }
+
+    public static PhoneRepository getInstance() {
+        if (instance == null) {
+            instance = new PhoneRepository();
+        }
+        return instance;
     }
 
     @Override
@@ -86,6 +95,16 @@ public class PhoneRepository implements CrudRepository<Phone> {
             }
         }
         return Optional.ofNullable(result);
+    }
+
+    public List<Phone> findByModel(final String model) {
+        List<Phone> phoneList = new ArrayList<>(phones.size());
+        for (Phone phone : phones) {
+            if (phone.getModel().equals(model)) {
+                phoneList.add(phone);
+            }
+        }
+        return phoneList;
     }
 
     private static class PhoneCopy {
