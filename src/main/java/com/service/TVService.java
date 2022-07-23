@@ -1,12 +1,17 @@
 package com.service;
 
 import com.model.product.TV;
-import com.repository.CrudRepository;
+import com.repository.TVRepository;
+
+import java.util.ArrayList;
 
 public class TVService extends ProductService<TV> {
 
-    public TVService(CrudRepository<TV> repository) {
+    private final TVRepository repository;
+
+    public TVService(TVRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     @Override
@@ -14,7 +19,14 @@ public class TVService extends ProductService<TV> {
         return new TV(
                 TV.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
                 RANDOM.nextInt(500),
-                RANDOM.nextDouble(1000.0)
-        );
+                RANDOM.nextDouble(1000.0),
+                new ArrayList<>());
+    }
+
+    public long countDetail(final String detail) {
+        return repository.getAll().stream()
+                .flatMap(tv -> tv.getDetails().stream())
+                .filter(d -> d.equals(detail))
+                .count();
     }
 }

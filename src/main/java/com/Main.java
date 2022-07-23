@@ -6,12 +6,20 @@ import com.repository.PhoneRepository;
 import com.service.OptionalExamples;
 import com.service.OrderService;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 
 public class Main {
     private static final OptionalExamples OPTIONAL_EXAMPLES = new OptionalExamples(PhoneRepository.getInstance());
     private static final OrderService ORDER_SERVICE = new OrderService();
+
+    private static final Predicate<List<Integer>> IS_VALID =
+            integers -> integers != null && !integers.isEmpty() && integers.contains(1);
+
+    private static final BiPredicate<List<Integer>, Integer> IS_VALID_SIZE = (list, size) -> list.size() >= size;
 
     private static final Scanner SCANNER = new Scanner(System.in);
 

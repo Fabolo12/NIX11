@@ -2,6 +2,7 @@ package com.service;
 
 import com.model.product.Manufacturer;
 import com.model.product.Phone;
+import com.model.product.Product;
 import com.repository.PhoneRepository;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -71,5 +72,12 @@ public class PhoneService extends ProductService<Phone> {
             totalPrice += phone.getPrice();
         }
         return totalPrice;
+    }
+
+    public double getTotalPriceForModelStream(final String model) {
+        return repository.getAll().stream()
+                .filter(phone -> phone.getModel().equals(model))
+                .mapToDouble(Product::getPrice)
+                .sum();
     }
 }

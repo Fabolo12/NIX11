@@ -12,7 +12,7 @@ import java.util.Random;
 public abstract class ProductService<T extends Product> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
     protected static final Random RANDOM = new Random();
-    protected final CrudRepository<T> repository;
+    private final CrudRepository<T> repository;
 
     protected ProductService(CrudRepository<T> repository) {
         this.repository = repository;

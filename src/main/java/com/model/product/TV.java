@@ -1,10 +1,19 @@
 package com.model.product;
 
-import java.util.Comparator;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Comparator;
+import java.util.List;
+
+@Getter
+@Setter
 public class TV extends Product {
-    public TV(String title, int count, double price) {
+
+    private List<String> details;
+    public TV(String title, int count, double price, List<String> details) {
         super(title, count, price, ProductType.TV);
+        this.details = details;
     }
 
     public static class TVComparator implements Comparator<TV> {
