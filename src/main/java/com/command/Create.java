@@ -2,6 +2,7 @@ package com.command;
 
 import com.model.product.ProductType;
 import com.service.ProductFactory;
+import com.util.UserInputUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Create implements Command {
         System.out.println("What do you want to create:");
         final ProductType[] values = ProductType.values();
         final List<String> names = getNamesOfType(values);
-        final int userInput = UserInputUtil.getUserInput(values.length, names);
+        final int userInput = UserInputUtil.getUserInput(names);
         ProductFactory.createAndSave(values[userInput]);
     }
 

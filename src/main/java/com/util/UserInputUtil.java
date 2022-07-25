@@ -1,4 +1,4 @@
-package com.command;
+package com.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,22 +12,22 @@ public class UserInputUtil {
 
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
-    public static int getUserInput(int length, List<String> names) {
+    public static int getUserInput(List<String> names) {
         int userType = -1;
         do {
-            userType = getUserInput(names, length);
+            userType = getUserInputPrivate(names);
         } while (userType == -1);
         return userType;
     }
 
-    private static int getUserInput(List<String> names, int length) {
+    private static int getUserInputPrivate(List<String> names) {
         try {
-            System.out.println("Please enter number between 0 and " + length);
-            for (int i = 0; i < length; i++) {
+            System.out.println("Please enter number between 0 and " + names.size());
+            for (int i = 0; i < names.size(); i++) {
                 System.out.printf("%d) %s%n", i, names.get(i));
             }
             int input = Integer.parseInt(READER.readLine());
-            if (input >= 0 && input < length) {
+            if (input >= 0 && input < names.size()) {
                 return input;
             }
         } catch (IOException | NumberFormatException e) {

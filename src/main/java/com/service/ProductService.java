@@ -5,6 +5,7 @@ import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -45,8 +46,8 @@ public abstract class ProductService<T extends Product> {
     }
 
     public void printAll() {
-        for (T phone : repository.getAll()) {
-            System.out.println(phone);
-        }
+        repository.getAll().stream()
+                .sorted(Comparator.comparing(Product::getTitle))
+                .forEach(System.out::println);
     }
 }
