@@ -9,11 +9,19 @@ public class TVService extends ProductService<TV> {
 
     private final TVRepository repository;
 
-    public TVService(TVRepository repository) {
+    private static TVService instance;
+
+    private TVService(final TVRepository repository) {
         super(repository);
         this.repository = repository;
     }
 
+    public static TVService getInstance() {
+        if (instance == null) {
+            instance = new TVService(TVRepository.getInstance());
+        }
+        return instance;
+    }
     @Override
     protected TV creatProduct() {
         return new TV(

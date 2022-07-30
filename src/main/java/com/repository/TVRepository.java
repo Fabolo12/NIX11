@@ -11,8 +11,17 @@ public class TVRepository implements CrudRepository<TV> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TVRepository.class);
     private final List<TV> tvList;
 
-    public TVRepository() {
+    private static TVRepository instance;
+
+    private TVRepository() {
         tvList = new LinkedList<>();
+    }
+
+    public static TVRepository getInstance() {
+        if (instance == null) {
+            instance = new TVRepository();
+        }
+        return instance;
     }
 
     @Override

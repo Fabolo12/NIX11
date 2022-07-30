@@ -15,10 +15,7 @@ public class OptionalExamples {
     }
 
     public void printIfPresent(String id) {
-        final Optional<? extends Product> phoneOptional = repository.findById(id);
-        phoneOptional.ifPresent(phone -> {
-            System.out.println(phone);
-        });
+        repository.findById(id).ifPresent(System.out::println);
     }
 
     public void printOrGetDefault(String id) {
@@ -35,7 +32,7 @@ public class OptionalExamples {
 
     public void printOrCreatDefault(String id) {
         final Product phone1 = repository.findById(id)
-                .orElseGet(() -> createAndSavePhone());
+                .orElseGet(this::createAndSavePhone);
         System.out.println(phone1);
 
         System.out.println("~".repeat(5));
@@ -50,37 +47,29 @@ public class OptionalExamples {
 
     public void mapPhoneToString(String id) {
         final String phone1 = repository.findById(id)
-                .map(p -> p.toString())
+                .map(Phone::toString)
                 .orElse("Phone not found");
         System.out.println(phone1);
 
         System.out.println("~".repeat(5));
 
         final String phone2 = repository.findById("112")
-                .map(p -> p.toString())
+                .map(Phone::toString)
                 .orElse("Phone not found");
         System.out.println(phone2);
     }
 
     public void printOrPrintDefault(String id) {
         repository.findById(id).ifPresentOrElse(
-                phone -> {
-                    System.out.println(phone);
-                },
-                () -> {
-                    System.out.println(createAndSavePhone());
-                }
+                System.out::println,
+                () -> System.out.println(createAndSavePhone())
         );
 
         System.out.println("~".repeat(5));
 
         repository.findById("112").ifPresentOrElse(
-                phone -> {
-                    System.out.println(phone);
-                },
-                () -> {
-                    System.out.println(createAndSavePhone());
-                }
+                System.out::println,
+                () -> System.out.println(createAndSavePhone())
         );
     }
 
@@ -88,12 +77,8 @@ public class OptionalExamples {
         repository.findById(id)
                 .filter(phone -> phone.getCount() <= count)
                 .ifPresentOrElse(
-                        phone -> {
-                            System.out.println(phone);
-                        },
-                        () -> {
-                            System.out.println("Phone with count " + count + " not found");
-                        }
+                        System.out::println,
+                        () -> System.out.println("Phone with count " + count + " not found")
                 );
     }
 
@@ -111,12 +96,12 @@ public class OptionalExamples {
 
     public void printPhone(String id) {
         repository.findById(id).or(() -> Optional.of(createAndSavePhone()))
-                .ifPresent(phone -> System.out.println(phone));
+                .ifPresent(System.out::println);
 
         System.out.println("~".repeat(5));
 
         repository.findById("123").or(() -> Optional.of(createAndSavePhone()))
-                .ifPresent(phone -> System.out.println(phone));
+                .ifPresent(System.out::println);
     }
 
     private Phone createAndSavePhone() {

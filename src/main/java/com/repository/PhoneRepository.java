@@ -4,7 +4,10 @@ import com.model.product.Phone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class PhoneRepository implements CrudRepository<Phone> {
 
@@ -67,15 +70,7 @@ public class PhoneRepository implements CrudRepository<Phone> {
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Phone> iterator = phones.iterator();
-        while (iterator.hasNext()) {
-            final Phone phone = iterator.next();
-            if (phone.getId().equals(id)) {
-                iterator.remove();
-                return true;
-            }
-        }
-        return false;
+        return phones.removeIf(phone -> phone.getId().equals(id));
     }
 
     @Override
@@ -88,23 +83,15 @@ public class PhoneRepository implements CrudRepository<Phone> {
 
     @Override
     public Optional<Phone> findById(String id) {
-        Phone result = null;
-        for (Phone phone : phones) {
-            if (phone.getId().equals(id)) {
-                result = phone;
-            }
-        }
-        return Optional.ofNullable(result);
+        return phones.stream()
+                .filter(phone -> phone.getId().equals(id))
+                .findAny();
     }
 
     public List<Phone> findByModel(final String model) {
-        List<Phone> phoneList = new ArrayList<>(phones.size());
-        for (Phone phone : phones) {
-            if (phone.getModel().equals(model)) {
-                phoneList.add(phone);
-            }
-        }
-        return phoneList;
+        return phones.stream()
+                .filter(phone -> phone.getModel().equals(model))
+                .toList();
     }
 
     private static class PhoneCopy {

@@ -1,15 +1,16 @@
-package com;
+package
 
-import com.command.Command;
 import com.command.Commands;
 import com.repository.PhoneRepository;
 import com.service.OptionalExamples;
 import com.service.OrderService;
+import com.util.UserInputUtil;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -21,35 +22,21 @@ public class Main {
 
     private static final BiPredicate<List<Integer>, Integer> IS_VALID_SIZE = (list, size) -> list.size() >= size;
 
-    private static final Scanner SCANNER = new Scanner(System.in);
-
     public static void main(String[] args) {
         final Commands[] values = Commands.values();
-        boolean exit;
+        boolean notExit;
 
         do {
-            exit = userAction(values);
-        } while (!exit);
+            notExit = userAction(values);
+        } while (notExit);
     }
 
     private static boolean userAction(final Commands[] values) {
-        int userCommand = -1;
-        do {
-            for (int i = 0; i < values.length; i++) {
-                System.out.printf("%d) %s%n", i, values[i].getName());
-            }
-            int input = SCANNER.nextInt();
-            if (input >= 0 && input < values.length) {
-                userCommand = input;
-            }
-        } while (userCommand == -1);
-        final Command command = values[userCommand].getCommand();
-        if (command == null) {
-            return true;
-        } else {
-            command.execute();
-            return false;
-        }
+        final List<String> names = Arrays.stream(values)
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        final int userInput = UserInputUtil.getUserInput(names);
+        return values[userInput].execute();
     }
 
     /*private static void orderExamples() {

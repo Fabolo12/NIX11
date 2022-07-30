@@ -17,4 +17,12 @@ public enum Commands {
         this.name = name;
         this.command = command;
     }
+
+    public boolean execute() {
+        if (command == null) {
+            return false;
+        }
+        command.execute();
+        return true;
+    }
 }
